@@ -79,29 +79,42 @@ var withdraw5 = document.getElementById("withdraw5");
 var withdraw25 = document.getElementById("withdraw25");
 
 deposit5.onclick = function () {
-  return console.log("Deposit 5");
+  return store.dispatch({ type: 'deposit', amount: 5 });
 };
 deposit25.onclick = function () {
-  return console.log("Deposit 25");
+  return store.dispatch({ type: 'deposit', amount: 25 });
 };
 withdraw5.onclick = function () {
-  return console.log("Withdraw 5");
+  return store.dispatch({ type: 'withdraw', amount: 5 });
 };
 withdraw25.onclick = function () {
-  return console.log("Withdraw 25");
+  return store.dispatch({ type: 'withdraw', amount: 25 });
 };
 
 var reducer = function reducer() {
   var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { balance: 0 };
   var action = arguments[1];
 
-  return state;
+  switch (action.type) {
+    case 'deposit':
+      return {
+        balance: state.balance + action.amount
+      };
+    case 'withdraw':
+      return {
+        balance: state.balance - action.amount
+      };
+    default:
+      return state;
+  }
 };
 
 var store = (0, _redux.createStore)(reducer);
 
 store.subscribe(function () {
   console.log('The store state changed. Here is the new State:', store.getState());
+  var state = store.getState();
+  balance.innerHTML = "$ " + state.balance;
 });
 
 /***/ }),
