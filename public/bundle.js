@@ -109,7 +109,20 @@ var reducer = function reducer() {
   }
 };
 
-var store = (0, _redux.createStore)(reducer);
+var logger = function logger(store) {
+  return function (next) {
+    return function (action) {
+      console.group(action.type);
+      console.info('dispatching', action);
+      var result = next(action);
+      console.log('next state', store.getState());
+      console.groupEnd(action.type);
+      return result;
+    };
+  };
+};
+
+var store = (0, _redux.createStore)(reducer, (0, _redux.applyMiddleware)(logger));
 
 store.subscribe(function () {
   console.log('The store state changed. Here is the new State:', store.getState());
